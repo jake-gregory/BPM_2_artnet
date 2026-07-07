@@ -49,9 +49,10 @@ async function processRecording(previousBpm: number): Promise<number> {
 
   const { bpm, volume } = detectBpm(samples, previousBpm);
   if (volume <= VOLUME_THRESHOLD) {
-    console.log(`Audio level too low, using last known BPM: ${previousBpm}`);
+    console.log('Audio level too low, using last known BPM:', previousBpm);
+  } else {
+    console.log('Detected BPM:', bpm);
   }
-  console.log('Detected BPM:', bpm);
 
   updateBeatInterval(bpm);
   const nextBpm = bpm > 0 && bpm !== previousBpm ? bpm : previousBpm;

@@ -1,26 +1,25 @@
-# BPM 2 Art-Net
+# BPM_2_artnet
 
-Detects the live BPM of audio from an audio interface and pulses an Art-Net DMX channel in time with the beat.
+This project is a small Node.js script that continuously detects the live BPM of an audio input and pulses an Art-Net DMX channel in time with every 1/4 beat. This can then be used in DMX software like QLC+ to ensure lighting is in time with the music.
 
 ## How it works
 
-On a loop, it:
+Each loop:
 
 1. Records a short sample of audio from the configured input device
-2. Decodes it and checks the volume — if it's too quiet, the last known BPM is kept
-3. Otherwise detects the tempo and reschedules a pulse on an Art-Net channel to match it
-4. Repeats
+2. Decodes and checks the volume. If the audio level it's too low, the last known BPM is used
+3. Otherwise the tempo is detected and a 1/4 note pulse is sent to an Art-Net channel of your choice
 
 ## Prerequisites
 
 - macOS (it uses `SwitchAudioSource`, which is macOS-only)
-- Node.js 24+
+- Node.js 20+
 - [`sox`](http://sox.sourceforge.net/) and [`SwitchAudioSource`](https://github.com/deweller/switchaudio-osx) available on your `PATH`:
   ```sh
   brew install sox switchaudio-osx
   ```
-  (`npm install` checks for both and prints a reminder if either is missing)
-- An Art-Net node reachable at the host configured in `src/config.ts` (defaults to `127.0.0.1`)
+  (`npm install` checks both are present)
+- An Art-Net node (defaults to `127.0.0.1`)
 
 ## Setup
 
@@ -28,7 +27,8 @@ On a loop, it:
 npm install
 ```
 
-Every value you're likely to want to change for your own setup — audio device names, Art-Net host/universe/channel, volume threshold, default BPM, timing — lives in one place: [`src/config.ts`](src/config.ts).
+Configurable values can be found in [`src/config.ts`](src/config.ts). This includes audio input device names, Art-Net host/universe/channel, volume threshold, default BPM and timing.
+
 
 ## Running
 
@@ -36,36 +36,7 @@ Every value you're likely to want to change for your own setup — audio device 
 npm start
 ```
 
-This builds the TypeScript and runs it. It will wait for your configured input device to become available, switch to it, then start the record → detect → pulse loop until you stop it (Ctrl+C).
-
-## Development
-
-| Command                  | What it does                       |
-| ------------------------ | ----------------------------------- |
-| `npm run type-check`      | Type-checks without emitting        |
-| `npm run lint`            | Lints                               |
-| `npm run lint:fix`        | Lints and auto-fixes                |
-| `npm run format`          | Formats with Prettier               |
-| `npm run test`            | Runs the unit tests                 |
-| `npm run test:watch`      | Runs the unit tests in watch mode   |
-| `npm run build`           | Compiles to `dist/`                 |
-
-A pre-commit hook (Husky + lint-staged) runs formatting, linting, and type-checking automatically on staged files.
-
-## Project structure
-
-```
-src/
-├── config.ts                 # every value you'd want to tune
-├── index.ts                  # entry point: orchestrates the loop
-├── types/                    # ambient type declarations for untyped dependencies
-└── components/
-    ├── wav.ts                # WAV/PCM file parsing
-    ├── bpm.ts                # volume gating + tempo detection
-    ├── audio-devices.ts      # switches the macOS input device
-    ├── recorder.ts           # records audio via sox
-    └── artnet-controller.ts  # sends the beat-synced Art-Net pulse
-```
+This command will compile the TypeScript and run the generated JavaScript. Once the configured input device becomes available, the script will switch to it and start the record → detect → pulse loop until you stop it (Ctrl+C).
 
 ## License
 
