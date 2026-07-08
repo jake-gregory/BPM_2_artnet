@@ -1,7 +1,7 @@
 {
-  "name": "bpm_2_artnet",
+  "name": "BPM_2_artnet",
   "version": "1.0.0",
-  "description": "",
+  "description": "Derive BPM from an audio source and send this out as an Art-Net pulse for DMX software.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jake-gregory/BPM_2_artnet.git"
@@ -37,6 +37,7 @@
   "author": "Jake Gregory",
   "license": "MIT",
   "type": "module",
+  "private": true,
   "dependencies": {
     "artnet": "^1.4.0",
     "music-tempo": "^1.0.3"

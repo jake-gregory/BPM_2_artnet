@@ -1,6 +1,6 @@
 # BPM_2_artnet
 
-This project is a small Node.js script that continuously detects the live BPM of an audio input and pulses an Art-Net DMX channel in time with every 1/4 beat. This can then be used in DMX software like QLC+ to ensure lighting is in time with the music.
+This project is a small Node.js script that continuously detects the live BPM of an audio input and pulses an Art-Net DMX channel in time with every beat. This can then be used in DMX software like QLC+ to ensure lighting is in time with the music.
 
 ## How it works
 
@@ -8,7 +8,7 @@ Each loop:
 
 1. Records a short sample of audio from the configured input device
 2. Decodes and checks the volume. If the audio level it's too low, the last known BPM is used
-3. Otherwise the tempo is detected and a 1/4 note pulse is sent to an Art-Net channel of your choice
+3. Otherwise the tempo is detected and a pulse is sent on every beat to an Art-Net channel of your choice
 
 ## Prerequisites
 
